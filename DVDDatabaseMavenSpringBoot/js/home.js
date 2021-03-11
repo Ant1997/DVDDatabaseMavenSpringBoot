@@ -3,7 +3,28 @@ $(document).ready(function () {
     showAddForm();
     addDvds();
     updateDvds();
+    searchDvds();
 });
+
+function clearErrorMessage(){
+    $('#errorMessages').empty();
+    $('#errorMessagesEdit').empty();
+    $('#errorMessagesAdd').empty();
+}
+
+function searchDvds() {
+    $('#searchButton').click(function (event) {
+        clearErrorMessage();
+
+        if(!$('#searchForm').find('input').val() || !$('#category').val()) {
+            //alert($('#category').val());
+            var message = "Both Search Category and Search Terms are required.";
+            $('#errorMessages').append($('<li>').attr({class: 'list-group-item list-group-item-danger'}).text(message));
+            return false;
+        }
+        alert($('#category').val());
+    });
+}
 
 function loadDvds() {
     clearDvdsTable();
@@ -22,7 +43,7 @@ function loadDvds() {
                 var notes = dvd.notes;
 
                 var row = '<tr>';
-                    row += '<td>' + title + '</td>';
+                    row += '<td><a href="#" onclick="showDvdDetail(' + dvdId + ')">'+ title + '</a></td>';
                     row += '<td>' + release_date + '</td>';
                     row += '<td>' + director + '</td>';
                     row += '<td>' + rating + '</td>';
@@ -67,7 +88,7 @@ function addDvds() {
            },
            'dataType': 'json',
            success: function() {
-               $('#errorMessages').empty();
+               clearErrorMessage();
                  $('#addTitle').val(''),
                  $('#addReleaseYear').val(''),
                  $('#addDirector').val(''),
@@ -76,11 +97,12 @@ function addDvds() {
                loadDvds();
                hideAddForm();
            },
-           error: function () {
+           error: function (request, status, error) {
                $('#errorMessages')
                 .append($('<li>')
                 .attr({class: 'list-group-item list-group-item-danger'})
                 .text('Error calling web service. Please try again later.'));
+                //alert(request.responseText);
            }
         })
     });
@@ -95,7 +117,7 @@ function showAddForm() {
 }
 
 function hideAddForm() {
-    $('#errorMessages').empty();
+    clearErrorMessage();
 
     $('#editTitle').val('');
     $('#editReleaseYear').val('');
@@ -114,8 +136,7 @@ function clearDvdsTable() {
 
 
 function hideEditForm() {
-    $('#errorMessages').empty();
-
+    clearErrorMessage();
     $('#editTitle').val('');
     $('#editReleaseYear').val('');
     $('#editDirector').val('');
@@ -128,8 +149,17 @@ function hideEditForm() {
 
 }
 
+function hideDetailForm() {
+    clearErrorMessage();
+
+    $('#dvdTableContainerDiv').show();
+    $('#editFormDiv').hide();
+    $('#addFormDiv').hide();
+    $('#dvdDetail').hide();
+
+}
 function showEditForm(dvdId) {
-    $('#errorMessages').empty();
+    clearErrorMessage();
     $('#editTitlePage').text("Edit Dvd- ");
 
     $.ajax({
@@ -158,7 +188,38 @@ function showEditForm(dvdId) {
     $('#addFormDiv').hide();
 }
 
-function updateDvds(id) {
+function showDvdDetail(dvdId) {
+    clearErrorMessage();
+    $('#dvdDetailPage').text("Dvd Title ");
+
+    $.ajax({
+        type: 'GET',
+        url: 'https://tsg-dvds.herokuapp.com/dvd/' + dvdId,
+        success: function(data, status) {
+            $('#dvdDetailPage').text(data.title);
+            $('#detailTitle').text(data.title);
+            $('#detailReleaseYear').text(data.releaseYear);
+            $('#detailDirector').text(data.director);
+            $('#detailRating').text(data.rating);
+            $('#detailNotes').text(data.notes);
+            $('#detailDvdId').val(data.id);
+
+        },
+        error: function() {
+            $('#errorMessages')
+            .append($('<li>')
+            .attr({class: 'list-group-item list-group-item-danger'})
+            .text('Error calling web service. Please try again later.'));
+        }
+    })
+
+    $('#dvdTableContainerDiv').hide();
+    $('#editFormDiv').hide();
+    $('#addFormDiv').hide();
+    $('#dvdDetail').show();
+}
+
+function updateDvds(dvdId) {
     $('#updateButton').click(function(event) {
 
         var haveValidationErrors = checkAndDisplayValidationErrors($('#editForm').find('input'));
@@ -171,7 +232,7 @@ function updateDvds(id) {
             type: 'PUT',
             url: 'https://tsg-dvds.herokuapp.com/dvd/' +  $('#editDvdId').val(),
             data: JSON.stringify({
-                id:  $('#editDvdId').val(),
+                dvdId:  $('#editDvdId').val(),
                 title: $('#editTitle').val(),
                 releaseYear: $('#editReleaseYear').val(),
                 director: $('#editDirector').val(),
@@ -184,17 +245,24 @@ function updateDvds(id) {
             },
             'dataType': 'json',
             'success': function() {
-                $('#errorMessage').empty();
+                clearErrorMessage();
                 hideEditForm();
                 loadDvds();
             },
-            'error': function() {
-                hideEditForm();
-                loadDvds();
+            'error': function(request, status, error) {
                 $('#errorMessages')
                 .append($('<li>')
                 .attr({class: 'list-group-item list-group-item-danger'})
                 .text('Error calling web service. Please try again later.'));
+                /*
+                $('#errorMessagesEdit')
+                .append($('<li>')
+                .attr({class: 'list-group-item list-group-item-danger'})
+                .text('Error calling web service. Please try again later.'));
+                */
+                hideEditForm(); //delete when figured out the bug
+                loadDvds();//delete when figured out the bug
+                //alert(request.responseText);
             }
         })
     })
@@ -211,7 +279,7 @@ function deleteDvd(dvdId) {
 }
 
 function checkAndDisplayValidationErrors(input) {
-    $('#errorMessages').empty();
+    clearErrorMessage();
 
     var errorMessages = [];
 
@@ -225,6 +293,8 @@ function checkAndDisplayValidationErrors(input) {
     if (errorMessages.length > 0){
         $.each(errorMessages,function(index,message) {
             $('#errorMessages').append($('<li>').attr({class: 'list-group-item list-group-item-danger'}).text(message));
+            $('#errorMessagesAdd').append($('<li>').attr({class: 'list-group-item list-group-item-danger'}).text(message));
+            $('#errorMessagesEdit').append($('<li>').attr({class: 'list-group-item list-group-item-danger'}).text(message));
         });
         // return true, indicating that there were errors
         return true;

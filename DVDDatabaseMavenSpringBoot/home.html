@@ -34,21 +34,29 @@
                     Search
                 </button>
             </div>
-            <div class="col-md-3">
-                <select name="category" id="category"  class="custom-select" style="width:200px;" >
-                    <option value="" disabled selected>Search Category</option>
-                    <option value="title">Title</option>
-                    <option value="releaseYear">Release Year</option>
-                    <option value="director">Director</option>
-                    <option value="rating">Rating</option>
-                </select>
-            </div>
-            <div class="col-md-5">
-                <input type="text"
-                       class="form-control"
-                       id="searchBar"
-                       placeholder="Search Term"
-                       required>
+            <div class="col-md-8">
+                <form class="form-horizontal" role="form" id="searchForm">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <select name="category" id="category"  class="custom-select" style="width:200px;" >
+                                <option value="" disabled selected>Search Category</option>
+                                <option value="title">Title</option>
+                                <option value="releaseYear">Release Year</option>
+                                <option value="director">Director</option>
+                                <option value="rating">Rating</option>
+                            </select>
+                            <label for="category" style="display:none;">Search Category</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text"
+                                   class="form-control"
+                                   id="searchBar"
+                                   placeholder="Search Term"
+                                   required>
+                            <label for="searchBar" style="display:none;">Search Term</label>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <hr>
@@ -82,6 +90,8 @@
 
     <!-- EDIT PAGE -->
     <div class="container" id="editFormDiv" style="display:none;">
+        <!-- Error Messages -->
+        <ul class="list-group" id="errorMessagesEdit"></ul>
         <br>
         <h1 id="editTitlePage"> Edit Dvd: </h1>
         <br>
@@ -109,6 +119,8 @@
                            class="form-control"
                            id="editReleaseYear"
                            placeholder="Release Year"
+                           maxlength="4"
+                           pattern="[1-9]{1}[0-9]{3}"
                            required>
                 </div>
             </div>
@@ -180,6 +192,8 @@
     </div>
     <!-- CREATE PAGE -->
     <div class="container" id="addFormDiv" style="display:none">
+        <!-- Error Messages -->
+        <ul class="list-group" id="errorMessagesAdd"></ul>
         <br>
         <h1>Create Dvd:</h1>
         <br>
@@ -207,6 +221,8 @@
                        class="form-control"
                        id="addReleaseYear"
                        placeholder="Release Year"
+                       maxlength="4"
+                       pattern="[1-9]{1}[0-9]{3}"
                        required>
             </div>
         </div>
@@ -276,6 +292,78 @@
     </form>
     </div>
 
+
+    <!-- DVD DETAIL PAGE -->
+    <div class="container" id="dvdDetail" style="display:none">
+        <!-- Error Messages -->
+        <br>
+        <h1 id="dvdDetailPage"> Dvd Title </h1>
+        <hr>
+        <br>
+        <form class="form-horizontal" role="form" id="detailForm">
+            <div class="form-group row">
+                <label for="addReleaseYear" class="col-md-2 control-label">
+                    Release Year:
+                </label>
+
+                <div class="col-md-4">
+                    <label id="detailReleaseYear" class="col-md-2 control-label">
+                        {Release Year}
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="addDirector" class="col-md-2 control-label">
+                    Director:
+                </label>
+
+                <div class="col-md-8">
+                    <label id="detailDirector" class="col-md-4 control-label">
+                        {Director}
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="addRating" class="col-md-2 control-label">
+                    Rating:
+                </label>
+
+                <div class="col-md-4">
+                    <label id="detailRating" class="col-md-2 control-label">
+                        {Rating}
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="addNotes" class="col-md-2 control-label">
+                    Notes:
+                </label>
+
+                <div class="col-md-8">
+                    <label id="detailNotes" class="col-md-4 control-label">
+                        {Notes}
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-1">
+                    <input type="hidden" id="detailDvdId">
+                    <button type="button"
+                            id="backButton"
+                            class="btn btn-danger"
+                            onclick="hideDetailForm()">
+                        Back
+                    </button>
+                </div>
+                <div class="col-md-4">
+                </div>
+            </div>
+        </form>
+    </div>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!-- use the the full jQuery build, NOT the slim build-->
