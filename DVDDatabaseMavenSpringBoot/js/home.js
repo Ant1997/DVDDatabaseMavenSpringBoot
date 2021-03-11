@@ -97,11 +97,11 @@ function showAddForm() {
 function hideAddForm() {
     $('#errorMessages').empty();
 
-    //$('#editTitle').val('');
-   // $('#editReleaseYear').val('');
-    //$('#editDirector').val('');
-    //$('#editRating').val('');
-    //$('#editNotes').val('');
+    $('#editTitle').val('');
+    $('#editReleaseYear').val('');
+    $('#editDirector').val('');
+    $('#editRating').val('');
+    $('#editNotes').val('');
 
     $('#dvdTableContainerDiv').show();
     $('#editFormDiv').hide();
