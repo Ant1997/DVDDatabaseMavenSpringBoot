@@ -1,0 +1,8 @@
+org\example\DVDDatabase\models\DVD.class
+org\example\DVDDatabase\data\DVDDao.class
+org\example\DVDDatabase\controller\DVDController.class
+org\example\DVDDatabase\data\DVDDatabaseDao$DVDMapper.class
+org\example\DVDDatabase\controller\DVDControllerExceptionHandler.class
+org\example\DVDDatabase\controller\Error.class
+org\example\DVDDatabase\data\DVDDatabaseDao.class
+org\example\DVDDatabase\App.class
