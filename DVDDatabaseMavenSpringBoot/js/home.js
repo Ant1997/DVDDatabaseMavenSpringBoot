@@ -47,8 +47,8 @@ function loadDvds() {
                     row += '<td>' + release_date + '</td>';
                     row += '<td>' + director + '</td>';
                     row += '<td>' + rating + '</td>';
-                    row += '<td><button type="button" class="btn btn-info" onclick="showEditForm(' + dvdId + ')">Edit</button></td>';
-                    row += '<td><button type="button" class="btn btn-danger" onclick="deleteDvd(' + dvdId + ')">Delete</button></td>';
+                    row += '<td><a href="#" onclick="showEditForm(' + dvdId + ')">Edit</a></td>';
+                    row += '<td><a href="#" onclick="deleteDvd(' + dvdId + ')">Delete</a></td>';
                     row += '</tr>';
 
                 contentRows.append(row);
@@ -92,7 +92,7 @@ function addDvds() {
                  $('#addTitle').val(''),
                  $('#addReleaseYear').val(''),
                  $('#addDirector').val(''),
-                 $('#addRating').val(''),
+                 $('#addRating').val('G'),
                  $('#addNotes').val('')
                loadDvds();
                hideAddForm();
@@ -119,11 +119,11 @@ function showAddForm() {
 function hideAddForm() {
     clearErrorMessage();
 
-    $('#editTitle').val('');
-    $('#editReleaseYear').val('');
-    $('#editDirector').val('');
-    $('#editRating').val('');
-    $('#editNotes').val('');
+    $('#addTitle').val('');
+    $('#addReleaseYear').val('');
+    $('#addDirector').val('');
+    $('#addRating').val('G');
+    $('#addNotes').val('');
 
     $('#dvdTableContainerDiv').show();
     $('#editFormDiv').hide();
@@ -140,7 +140,7 @@ function hideEditForm() {
     $('#editTitle').val('');
     $('#editReleaseYear').val('');
     $('#editDirector').val('');
-    $('#editRating').val('');
+    $('#editRating').val('G');
     $('#editNotes').val('');
 
     $('#dvdTableContainerDiv').show();

@@ -145,11 +145,13 @@
                 </label>
 
                 <div class="col-md-4">
-                    <input type="text"
-                           class="form-control"
-                           id="editRating"
-                           placeholder="Rating"
-                           required>
+                    <select name="editRating" id="editRating"  class="custom-select" style="width:200px;" >
+                        <option value="G" selected >G</option>
+                        <option value="PG" selected >PG</option>
+                        <option value="PG-13" selected >PG-13</option>
+                        <option value="R" selected >R</option>
+                        <option value="NC-17" selected >NC-17</option>
+                    </select>
                 </div>
             </div>
 
@@ -247,11 +249,13 @@
             </label>
 
             <div class="col-md-4">
-                <input type="text"
-                       class="form-control"
-                       id="addRating"
-                       placeholder="Rating"
-                       required>
+                <select name="addRating" id="addRating"  class="custom-select" style="width:200px;" >
+                    <option value="G" selected>G</option>
+                    <option value="PG">PG</option>
+                    <option value="PG-13">PG-13</option>
+                    <option value="R" >R</option>
+                    <option value="NC-17"  >NC-17</option>
+                </select>
             </div>
         </div>
 
@@ -277,7 +281,7 @@
                 <button type="button"
                         id="addCancelButton"
                         class="btn btn-danger"
-                        onclick="hideEditForm()">
+                        onclick="hideAddForm()">
                     Cancel
                 </button>
             </div>
