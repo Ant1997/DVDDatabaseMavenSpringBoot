@@ -22,7 +22,45 @@ function searchDvds() {
             $('#errorMessages').append($('<li>').attr({class: 'list-group-item list-group-item-danger'}).text(message));
             return false;
         }
-        alert($('#category').val());
+
+        var category = $('#category').val();
+        var searchInput = $('#searchForm').find('input').val();
+        var url_api = 'https://tsg-dvds.herokuapp.com/dvds/'+ category + '/' + searchInput;
+
+        clearDvdsTable();
+        var contentRows = $('#contentRows');
+
+        $.ajax({
+            type: 'GET',
+            url: url_api,
+            success: function(dvdArray) {
+                $.each(dvdArray, function(index, dvd){
+                    var title = dvd.title;
+                    var release_date = dvd.releaseYear;
+                    var director = dvd.director;
+                    var rating = dvd.rating;
+                    var dvdId = dvd.id;
+                    var notes = dvd.notes;
+
+                    var row = '<tr>';
+                        row += '<td><a href="#" onclick="showDvdDetail(' + dvdId + ')">'+ title + '</a></td>';
+                        row += '<td>' + release_date + '</td>';
+                        row += '<td>' + director + '</td>';
+                        row += '<td>' + rating + '</td>';
+                        row += '<td><a href="#" onclick="showEditForm(' + dvdId + ')">Edit</a></td>';
+                        row += '<td><a href="#" onclick="deleteDvd(' + dvdId + ')">Delete</a></td>';
+                        row += '</tr>';
+
+                    contentRows.append(row);
+                })
+            },
+            error: function() {
+                $('#errorMessages')
+                    .append($('<li>')
+                    .attr({class: 'list-group-item list-group-item-danger'})
+                    .text('Error calling web service. Please try again later.'));
+            }
+        });
     });
 }
 
@@ -269,13 +307,18 @@ function updateDvds(dvdId) {
 }
 
 function deleteDvd(dvdId) {
-    $.ajax({
-        type: 'DELETE',
-        url: 'https://tsg-dvds.herokuapp.com/dvd/' + dvdId,
-        success: function() {
-            loadDvds();
-        }
-    });
+//Once, delete button is clicked...
+    var r = confirm("Are you sure you want to delete this Dvd from the collection?");
+
+     if (r == true) {
+        $.ajax({
+            type: 'DELETE',
+            url: 'https://tsg-dvds.herokuapp.com/dvd/' + dvdId,
+            success: function() {
+                loadDvds();
+            }
+        });
+     }
 }
 
 function checkAndDisplayValidationErrors(input) {
